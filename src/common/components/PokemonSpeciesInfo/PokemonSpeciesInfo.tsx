@@ -44,6 +44,9 @@ export const PokemonSpeciesInfo = ({
 
   return (
     <Box position="relative" py={5} mt={2} {...props}>
+      <Heading fontSize={18} mb={2}>
+        Species:
+      </Heading>
       <Text>{flavor_text_entries[0].flavor_text}</Text>
 
       <Box
@@ -53,7 +56,7 @@ export const PokemonSpeciesInfo = ({
         my={6}
         width={{ base: '100%', md: 300 }}
       >
-        <Text fontWeight="bold" mr={2} fontSize={14}>
+        <Text fontWeight="bold" mr={2} fontSize={16}>
           Color
         </Text>
         <Box
@@ -67,14 +70,13 @@ export const PokemonSpeciesInfo = ({
       </Box>
 
       <Box mt={6}>
-        <Heading fontSize={14} variant="h4">
+        <Heading fontSize={16} variant="h4">
           Features
         </Heading>
-        <List width={{ base: '100%', md: 300 }} my={1}>
+        <List width={{ base: '100%', md: 300 }} my={1} fontSize={14}>
           {listItems.map(({ label, value }) => (
             <ListItem
               display="flex"
-              fontSize={12}
               justifyContent="space-between"
               key={label}
               py={2}

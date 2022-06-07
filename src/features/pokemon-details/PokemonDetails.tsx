@@ -1,8 +1,17 @@
-import { Box, Heading, Spinner, Tag } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Spinner,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
+
 import { useGetOnePokemonQuery } from '../../app/services/pokemon';
-import { PokemonSpeciesInfo } from '../../common/components';
-import { getId } from '../../utils';
+import { PokemonSpeciesInfo, SpritesGallery } from '../../common/components';
+import { dmToCmFormatted, getId, hgToKgFormatted } from '../../utils';
 
 export const PokemonDetails = () => {
   const { pokemonId } = useParams();
@@ -13,14 +22,28 @@ export const PokemonDetails = () => {
     return <Spinner />;
   }
 
-  const {
-    species,
-    types,
-    name,
-    sprites: { front_default: imageSrc },
-  } = data;
+  const { height, name, species, sprites, types, weight } = data;
+
+  const imageSources = Object.keys(sprites)
+    .map((key) =>
+      key in sprites ? sprites[key as keyof typeof sprites] : undefined
+    )
+    .filter((value) => value && typeof value === 'string') as string[];
+
+  console.log(imageSources);
 
   const speciesId = getId(species.url);
+
+  const listItems = [
+    {
+      label: 'Weight',
+      value: hgToKgFormatted(weight),
+    },
+    {
+      label: 'Height',
+      value: dmToCmFormatted(height),
+    },
+  ] as const;
 
   return (
     <Box
@@ -29,21 +52,8 @@ export const PokemonDetails = () => {
       py={8}
       flexDirection={{ base: 'column', md: 'row' }}
     >
-      <Box
-        alignItems="center"
-        bg="gray.50"
-        borderRadius={6}
-        display="flex"
-        h={300}
-        justifyContent="center"
-        w={{ base: '100%', md: 300 }}
-        border="2px solid"
-        borderColor="gray.200"
-      >
-        {imageSrc && (
-          <Box as="img" src={imageSrc} sx={{ mx: 'auto', display: 'block' }} />
-        )}
-      </Box>
+      <SpritesGallery sprites={imageSources} />
+
       <Box px={{ base: 2, md: 8 }} flex={1} mt={{ base: 8, md: 0 }}>
         <Heading variant="h1" fontWeight="bold" fontSize={40}>
           {name}
@@ -55,6 +65,24 @@ export const PokemonDetails = () => {
             </Tag>
           ))}
         </Box>
+
+        <List mt={4} width={{ base: '100%', md: 300 }} fontSize={14}>
+          {listItems.map(({ label, value }) => (
+            <ListItem
+              display="flex"
+              justifyContent="space-between"
+              key={label}
+              py={2}
+              w="100%"
+            >
+              {label}:{' '}
+              <Text as="span" fontWeight="bold">
+                {value}
+              </Text>{' '}
+            </ListItem>
+          ))}
+        </List>
+
         <PokemonSpeciesInfo speciesId={speciesId} />
       </Box>
     </Box>

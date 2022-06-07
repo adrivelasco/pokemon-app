@@ -10,6 +10,7 @@ import {
   SkeletonText,
 } from '@chakra-ui/react';
 import { useGetOnePokemonQuery } from '../../../app/services/pokemon';
+import { dmToCmFormatted, hgToKgFormatted } from '../../../utils';
 import { Card } from '../Card';
 
 export interface PokemonCardProps extends BoxProps {
@@ -66,13 +67,13 @@ export const PokemonCard = ({ pokemonId, ...props }: PokemonCardProps) => {
                 <ListItem>
                   weight:{' '}
                   <Text as="span" fontWeight="bold">
-                    {weight / 10} KG
+                    {hgToKgFormatted(weight)}
                   </Text>{' '}
                 </ListItem>
                 <ListItem>
                   height:{' '}
                   <Text as="span" fontWeight="bold">
-                    {height * 10} CM
+                    {dmToCmFormatted(height)}
                   </Text>
                 </ListItem>
               </List>
