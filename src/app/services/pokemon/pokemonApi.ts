@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { Collection, CustomQuery } from './types';
-import { Pokemon } from './models';
+import { Collection } from './types';
+import { Pokemon, PokemonSpecies } from './models';
 
 export const pokemonApi = createApi({
   reducerPath: 'postsApi',
@@ -9,38 +9,22 @@ export const pokemonApi = createApi({
     baseUrl: 'https://pokeapi.co/api/v2',
   }),
   endpoints: (build) => ({
-    getAllPokemon: build.query<Collection<Pokemon>, void>({
-      queryFn: async (_args, _queryApi, _extraOptions, baseQuery) => {
-        const response = (await baseQuery('pokemon')) as CustomQuery<
-          Collection<{ url: string }>
-        >;
-
-        if (response.error) {
-          return {
-            error: response.error,
-          };
-        }
-
-        const results: Pokemon[] = [];
-
-        if (response.data && response.data.count > 0) {
-          const queries = response.data.results.map(
-            ({ url }) => baseQuery(url) as CustomQuery<Pokemon>
-          );
-
-          const pokemonArray = await Promise.all(queries);
-
-          results.push(...pokemonArray.map((pokemon) => pokemon.data!));
-        }
-
-        return { data: { ...response.data, results } };
-      },
+    getAllPokemon: build.query<Collection<{ url: string }>, void>({
+      query: () => ({ url: 'pokemon' }),
     }),
 
-    getOnePokemon: build.query<Pokemon, string | number>({
+    getOnePokemon: build.query<Pokemon, string>({
       query: (id) => ({ url: `pokemon/${id}` }),
+    }),
+
+    getOnePokemonSpecies: build.query<PokemonSpecies, string>({
+      query: (id) => ({ url: `pokemon-species/${id}` }),
     }),
   }),
 });
 
-export const { useGetAllPokemonQuery, useGetOnePokemonQuery } = pokemonApi;
+export const {
+  useGetAllPokemonQuery,
+  useGetOnePokemonQuery,
+  useGetOnePokemonSpeciesQuery,
+} = pokemonApi;

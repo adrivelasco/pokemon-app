@@ -1,20 +1,18 @@
+import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 
-import { PokemonList } from '../features/pokemon-list';
 import { theme } from '../common/theme';
 
-import { Layout } from './components/Layout';
 import { store } from './store';
+import { Router } from './Router';
 
-export const App = () => {
-  return (
-    <Provider store={store}>
+export const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <Layout>
-          <PokemonList />
-        </Layout>
+        <Router />
       </ChakraProvider>
-    </Provider>
-  );
-};
+    </BrowserRouter>
+  </Provider>
+);

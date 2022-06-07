@@ -1,8 +1,19 @@
-import { Box, BoxProps, Button, Heading, Text } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { Box, BoxProps, Button } from '@chakra-ui/react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
-export interface LayoutProps extends BoxProps {}
+import { PokedexLogo } from './PokedexLogo';
 
-export const Layout = ({ children, ...props }: LayoutProps) => {
+export type LayoutProps = BoxProps;
+
+export const Layout = (props: LayoutProps) => {
+  const navigate = useNavigate();
+
+  const handleOnClickLogo = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   return (
     <Box maxWidth={1280} mx="auto" position="relative" {...props}>
       <Box
@@ -12,21 +23,13 @@ export const Layout = ({ children, ...props }: LayoutProps) => {
         px={4}
         py={6}
       >
-        <Box position="relative">
-          <Heading variant="h1" fontSize={55}>
-            <Text color="cyan.500" as="span">
-              poke
-            </Text>
-            dex
-          </Heading>
-          <Text fontSize={14} position="absolute" bottom="-10px" left="18px">
-            react web app
-          </Text>
-        </Box>
-        <Button variant="solid">Add Pokemon</Button>
+        <PokedexLogo onClick={handleOnClickLogo} />
+        <Button variant="outline" colorScheme="cyan" leftIcon={<AddIcon />}>
+          Add Pokemon
+        </Button>
       </Box>
       <Box as="main" position="relative">
-        {children}
+        <Outlet />
       </Box>
     </Box>
   );

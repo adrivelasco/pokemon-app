@@ -5,6 +5,10 @@ export type Pokemon = {
   name: string;
   height: number;
   weight: number;
+  species: {
+    name: string;
+    url: string;
+  };
   sprites: {
     back_default?: string | null;
     back_female?: string | null;
