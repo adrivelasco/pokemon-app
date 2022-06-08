@@ -22,9 +22,6 @@ export interface AddPokemonFormValues {
   color: string;
   description: string;
   height: number;
-  isBaby: boolean;
-  isLegendary: boolean;
-  isMythical: boolean;
   name: string;
   weight: number;
 }

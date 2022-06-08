@@ -9,7 +9,7 @@ const initialState = {
   species: null as PokemonSpecies | null,
 };
 
-export const addPokemonSlice = createSlice({
+const addPokemonSlice = createSlice({
   name: 'addPokemon',
   initialState,
   reducers: {
