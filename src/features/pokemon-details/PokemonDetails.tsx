@@ -30,8 +30,6 @@ export const PokemonDetails = () => {
     )
     .filter((value) => value && typeof value === 'string') as string[];
 
-  console.log(imageSources);
-
   const speciesId = getId(species.url);
 
   const listItems = [

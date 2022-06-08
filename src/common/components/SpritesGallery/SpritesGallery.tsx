@@ -25,9 +25,9 @@ export const SpritesGallery = ({ sprites }: SpritesGalleryProps) => {
       borderColor="gray.200"
       borderRadius={6}
       display="flex"
-      h={300}
+      h={{ base: 300, md: 250, lg: 300 }}
       justifyContent="center"
-      w={{ base: '100%', md: 300 }}
+      w={{ base: '100%', md: 250, lg: 300 }}
     >
       <IconButton
         aria-label="left"

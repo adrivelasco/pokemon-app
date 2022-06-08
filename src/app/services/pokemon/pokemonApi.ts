@@ -9,8 +9,13 @@ export const pokemonApi = createApi({
     baseUrl: 'https://pokeapi.co/api/v2',
   }),
   endpoints: (build) => ({
-    getAllPokemon: build.query<Collection<{ url: string }>, void>({
-      query: () => ({ url: 'pokemon' }),
+    getAllPokemon: build.query<
+      Collection<{ url: string }>,
+      { offset?: number; limit?: number }
+    >({
+      query: ({ offset = 0, limit = 20 } = {}) => ({
+        url: `pokemon?offset=${offset}&limit=${limit}`,
+      }),
     }),
 
     getOnePokemon: build.query<Pokemon, string>({

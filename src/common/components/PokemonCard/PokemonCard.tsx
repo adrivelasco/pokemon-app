@@ -30,7 +30,9 @@ export const PokemonCard = ({ pokemonId, ...props }: PokemonCardProps) => {
       <Card>
         <Skeleton bg="gray.50" py={2} height={110} opacity={0.1} />
         <Box p={4}>
-          <SkeletonText noOfLines={3} />
+          <SkeletonText noOfLines={1} skeletonHeight={4} maxWidth={40} />
+          <SkeletonText noOfLines={4} mt={3} />
+          <SkeletonText noOfLines={1} opacity={0.5} mt={3} maxWidth={50} />
         </Box>
       </Card>
     );
@@ -47,7 +49,7 @@ export const PokemonCard = ({ pokemonId, ...props }: PokemonCardProps) => {
   return (
     <Card {...props}>
       {imageSrc && (
-        <Box bg="gray.50" py={2}>
+        <Box bg="gray.50" py={2} minHeight={112}>
           <Box as="img" src={imageSrc} sx={{ mx: 'auto', display: 'block' }} />
         </Box>
       )}
