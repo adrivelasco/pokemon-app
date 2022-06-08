@@ -14,7 +14,7 @@ export const PokedexLogo = (props: PokedexLogoProps) => {
       {...props}
     >
       <Heading variant="h1" fontSize={55}>
-        <Text color="cyan.500" as="span">
+        <Text color="red.500" as="span">
           poke
         </Text>
         dex
