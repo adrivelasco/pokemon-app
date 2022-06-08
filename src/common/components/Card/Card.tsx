@@ -14,11 +14,11 @@ export const Card = (props: CardProps) => (
     cursor="pointer"
     _hover={{
       borderWidth: 2,
-      borderColor: 'red.500',
+      borderColor: 'main.500',
       transform: 'translateY(-8px)',
 
       '.pokemon-name': {
-        color: 'red.500',
+        color: 'main.500',
       },
     }}
     {...props}

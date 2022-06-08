@@ -87,7 +87,7 @@ export const PokemonSpeciesInfo = ({
                 {value ? (
                   <CheckIcon color="green.500" />
                 ) : (
-                  <CloseIcon color="red.500" />
+                  <CloseIcon color="main.500" />
                 )}
               </span>
             </ListItem>

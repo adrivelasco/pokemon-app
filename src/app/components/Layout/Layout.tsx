@@ -14,6 +14,10 @@ export const Layout = (props: LayoutProps) => {
     navigate('/');
   }, [navigate]);
 
+  const handleOnClickAddPokemon = useCallback(() => {
+    navigate('/pokemon/new');
+  }, [navigate]);
+
   return (
     <Box maxWidth={1280} mx="auto" position="relative" {...props}>
       <Box
@@ -25,7 +29,11 @@ export const Layout = (props: LayoutProps) => {
         py={6}
       >
         <PokedexLogo onClick={handleOnClickLogo} />
-        <Button variant="solid" colorScheme="red" leftIcon={<AddIcon />}>
+        <Button
+          leftIcon={<AddIcon />}
+          onClick={handleOnClickAddPokemon}
+          variant="solid"
+        >
           Add Pokemon
         </Button>
       </Box>
@@ -34,8 +42,8 @@ export const Layout = (props: LayoutProps) => {
         <Outlet />
       </Box>
 
-      <Box as="footer" px={4} textAlign="right">
-        <Box height={1} bg="gray.200" my={5} />
+      <Box as="footer" px={4} textAlign="right" mt={12}>
+        <Box height={1} bg="gray.200" mb={4} />
         <Text fontSize={14} color="gray.600">
           Adrian Velasco @ 2022
         </Text>
