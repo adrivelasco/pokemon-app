@@ -1,12 +1,12 @@
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Spinner } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 
-import { useGetAllPokemonQuery } from '../../app/services/pokemon';
+import { useGetAllPokemonQuery } from '../../app/store/services/pokemon';
 import { PokemonCard } from '../../common/components';
 import { useIsMobile } from '../../common/hooks';
 import { getId, getQueryParams } from '../../utils';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 export const PokemonList = () => {
   const { isMobile, isTablet } = useIsMobile();

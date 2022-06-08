@@ -12,8 +12,13 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-interface FormValues {
+import { addPokemon } from '../../app/store/slices/addPokemonSlice';
+
+export interface AddPokemonFormValues {
   color: string;
   description: string;
   height: number;
@@ -47,14 +52,27 @@ const schema = yup
   .required();
 
 export const AddPokemon = () => {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const {
+    watch,
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormValues>({
+  } = useForm<AddPokemonFormValues>({
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
+
+  const fieldValues = watch();
+
+  const onSubmit = useCallback(() => {
+    dispatch(addPokemon(fieldValues));
+
+    navigate('/pokemon/fake');
+  }, [dispatch, fieldValues, navigate]);
 
   return (
     <Box position="relative" px={4} mt={3}>
@@ -108,28 +126,32 @@ export const AddPokemon = () => {
           </FormControl>
 
           <FormControl isInvalid={Boolean(errors.weight)}>
-            <FormLabel htmlFor="weight">Weight (kg)</FormLabel>
+            <FormLabel htmlFor="weight">Weight</FormLabel>
             <Input
               id="weight"
               type="text"
-              placeholder="80"
+              placeholder="80 (hectograms)"
               {...register('weight')}
             />
             <FormErrorMessage>{errors.weight?.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={Boolean(errors.height)}>
-            <FormLabel htmlFor="height">Height (cm)</FormLabel>
+            <FormLabel htmlFor="height">Height</FormLabel>
             <Input
               id="height"
               type="text"
-              placeholder="145"
+              placeholder="145 (decimeters)"
               {...register('height')}
             />
             <FormErrorMessage>{errors.height?.message}</FormErrorMessage>
           </FormControl>
 
-          <Button disabled={!isValid} rightIcon={<ChevronRightIcon />}>
+          <Button
+            disabled={!isValid}
+            rightIcon={<ChevronRightIcon />}
+            onClick={handleSubmit(onSubmit)}
+          >
             Add Pokemon
           </Button>
         </Box>

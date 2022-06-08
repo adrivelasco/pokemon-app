@@ -8,8 +8,10 @@ import {
   SkeletonText,
   Text,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 
-import { useGetOnePokemonSpeciesQuery } from '../../../app/services/pokemon';
+import { useGetOnePokemonSpeciesQuery } from '../../../app/store/services/pokemon';
+import { selectAddPokemonState } from '../../../app/store/slices/addPokemonSlice';
 
 export interface PokemonSpeciesInfoProps extends BoxProps {
   speciesId: string;
@@ -19,7 +21,15 @@ export const PokemonSpeciesInfo = ({
   speciesId,
   ...props
 }: PokemonSpeciesInfoProps) => {
-  const { data, isLoading } = useGetOnePokemonSpeciesQuery(speciesId);
+  const { data, isLoading, error } = useGetOnePokemonSpeciesQuery(speciesId, {
+    skip: speciesId === 'fake',
+  });
+
+  const fakePokemonData = useSelector(selectAddPokemonState);
+
+  if (error || (speciesId === 'fake' && !fakePokemonData.species)) {
+    return null;
+  }
 
   if (isLoading) {
     return (
@@ -29,12 +39,10 @@ export const PokemonSpeciesInfo = ({
     );
   }
 
-  if (!data) {
-    return null;
-  }
-
   const { flavor_text_entries, is_baby, is_legendary, is_mythical, color } =
-    data;
+    speciesId === 'fake' && fakePokemonData.species
+      ? fakePokemonData.species
+      : data!;
 
   const listItems = [
     { label: 'Baby', value: is_baby },

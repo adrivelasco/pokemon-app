@@ -7,22 +7,57 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { useGetOnePokemonQuery } from '../../app/services/pokemon';
+import { useGetOnePokemonQuery } from '../../app/store/services/pokemon';
+import { selectAddPokemonState } from '../../app/store/slices/addPokemonSlice';
 import { PokemonSpeciesInfo, SpritesGallery } from '../../common/components';
 import { dmToCmFormatted, getId, hgToKgFormatted } from '../../utils';
 
 export const PokemonDetails = () => {
   const { pokemonId } = useParams();
 
-  const { data, isLoading } = useGetOnePokemonQuery(pokemonId!);
+  const { data, isLoading, error } = useGetOnePokemonQuery(pokemonId!, {
+    skip: pokemonId === 'fake',
+  });
 
-  if (isLoading || !data) {
-    return <Spinner />;
+  const fakePokemonData = useSelector(selectAddPokemonState);
+
+  if (error || (pokemonId === 'fake' && !fakePokemonData.pokemon)) {
+    return (
+      <Box
+        alignItems="center"
+        display="flex"
+        justifyContent="center"
+        minHeight={200}
+        mt={8}
+        textAlign="center"
+      >
+        <Heading fontSize={16}>
+          Failed to retrieve Pokemon with ID: {pokemonId}
+        </Heading>
+      </Box>
+    );
   }
 
-  const { height, name, species, sprites, types, weight } = data;
+  if (isLoading) {
+    return (
+      <Box
+        alignItems="center"
+        display="flex"
+        justifyContent="center"
+        minHeight={200}
+      >
+        <Spinner />
+      </Box>
+    );
+  }
+
+  const { height, name, species, sprites, types, weight } =
+    pokemonId === 'fake' && fakePokemonData.pokemon
+      ? fakePokemonData.pokemon
+      : data!;
 
   const imageSources = Object.keys(sprites)
     .map((key) =>
@@ -81,7 +116,7 @@ export const PokemonDetails = () => {
           ))}
         </List>
 
-        <PokemonSpeciesInfo speciesId={speciesId} />
+        {speciesId && <PokemonSpeciesInfo speciesId={speciesId} />}
       </Box>
     </Box>
   );

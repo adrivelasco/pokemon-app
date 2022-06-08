@@ -9,7 +9,8 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react';
-import { useGetOnePokemonQuery } from '../../../app/services/pokemon';
+
+import { useGetOnePokemonQuery } from '../../../app/store/services/pokemon';
 import { dmToCmFormatted, hgToKgFormatted } from '../../../utils';
 import { Card } from '../Card';
 
